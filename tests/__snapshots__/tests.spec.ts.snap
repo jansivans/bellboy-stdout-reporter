@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`correctly logs bellboy job 1`] = `
+Array [
+  "",
+  "√ Job #0 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "√ Job #0. Stream #0 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 1 received (7 B).",
+  "    Destination #0.",
+  "        Batch load: 1 loaded(9 B)",
+  "",
+  "√ Job #0 completed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+]
+`;
+
+exports[`correctly logs load exceptions 1`] = `
+Array [
+  "",
+  "√ Job #1 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "x Job #1. Stream #0. Destination #0. Batch load failed.",
+  "    Timestamp: timestamp-mock",
+  "    Source data: [\\"test0\\"]",
+  "    Error: Error: Oh, snap!",
+  "",
+  "√ Job #1. Stream #0 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 1 received (7 B).",
+  "    Destination #0.",
+  "        Batch load: 1 failed",
+  "",
+  "√ Job #1 completed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+]
+`;

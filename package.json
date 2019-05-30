@@ -1,0 +1,40 @@
+{
+  "name": "bellboy-stdout-reporter",
+  "version": "0.0.2",
+  "description": "",
+  "main": "lib/index",
+  "types": "lib/index",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "jest --coverage",
+    "codecov": "codecov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Claviz/bellboy-stdout-reporter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Claviz/bellboy-stdout-reporter/issues"
+  },
+  "homepage": "https://github.com/Claviz/bellboy-stdout-reporter#readme",
+  "devDependencies": {
+    "@types/filesize": "^4.1.0",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^10.12.24",
+    "@types/pug": "^2.0.4",
+    "bellboy": "^2.4.0",
+    "codecov": "^3.5.0",
+    "jest": "^24.1.0",
+    "strip-ansi": "^5.2.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "filesize": "^4.1.2",
+    "pretty-ms": "^5.0.0"
+  }
+}
