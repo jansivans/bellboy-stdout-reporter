@@ -24,3 +24,7 @@ export interface LogItem {
     lines?: { [key: string]: string };
     children?: LogItem[];
 }
+
+export interface IReporterConfig {
+    interval?: number;
+}

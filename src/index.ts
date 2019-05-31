@@ -3,11 +3,22 @@ import chalk from 'chalk';
 import filesize from 'filesize';
 import prettyMs from 'pretty-ms';
 
-import { IStream, LogItem } from './types';
+import { IStream, LogItem, IReporterConfig } from './types';
 import { truncateStr, getCurrentTimestamp } from './utils';
 
 let globalJobId = 0;
 export class StdoutReporter extends Reporter {
+
+    private interval: number;
+
+    constructor(config?: IReporterConfig) {
+        super();
+        this.interval = 5000;
+        if (config) {
+            this.interval = config.interval || 5000;
+        }
+    }
+
     report(job: Job) {
         const jobId = globalJobId;
         globalJobId++;
@@ -214,7 +225,6 @@ export class StdoutReporter extends Reporter {
             });
         });
         let timePassed = 0;
-        const interval = 5000;
         job.on('startProcessingStream', async (...args) => {
             stream = {
                 receivedRows: 0,
@@ -227,12 +237,12 @@ export class StdoutReporter extends Reporter {
             };
             timeoutObj = setInterval(() => {
                 if (!stream.finished) {
-                    timePassed += interval;
+                    timePassed += this.interval;
                     const speed = stream.receivedRows / (timePassed / 1000);
                     stream.speed = speed;
                     getStreamStatus();
                 }
-            }, interval);
+            }, this.interval);
         });
         job.on('endProcessingStream', async (...argumets) => {
             if (timeoutObj) {

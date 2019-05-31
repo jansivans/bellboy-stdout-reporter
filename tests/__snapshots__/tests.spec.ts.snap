@@ -1,24 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`correctly logs bellboy job 1`] = `
+exports[`logs destination batch transformations 1`] = `
 Array [
   "",
-  "√ Job #0 started.",
+  "√ Job #4 started.",
   "    Timestamp: timestamp-mock",
   "",
-  "√ Job #0. Stream #0 processed.",
+  "x Job #4. Stream #0. Destination #0. Batch transform failed.",
   "    Timestamp: timestamp-mock",
-  "    Rows: 1 received (7 B).",
+  "    Source data: [\\"shouldFail\\"]",
+  "    Error: Error: Oh, snap!",
+  "",
+  "√ Job #4. Stream #0 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 2 received (27 B).",
   "    Destination #0.",
-  "        Batch load: 1 loaded(9 B)",
+  "        Row transformation: 1 transformed, 1 failed",
+  "        Batch load: 2 loaded(31 B)",
   "",
-  "√ Job #0 completed.",
+  "√ Job #4 completed.",
   "    Timestamp: timestamp-mock",
   "    Job duration: pretty-ms-mock",
 ]
 `;
 
-exports[`correctly logs load exceptions 1`] = `
+exports[`logs destination record generations 1`] = `
+Array [
+  "",
+  "√ Job #5 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "x Job #5. Stream #0. Destination #0. Row generation failed.",
+  "    Timestamp: timestamp-mock",
+  "    Source row: \\"shouldFail\\"",
+  "    Error: Error: Oh, snap!",
+  "",
+  "√ Job #5. Stream #0 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 2 received (27 B).",
+  "    Destination #0.",
+  "        Row generation: 1 generated, 1 failed",
+  "        Batch load: 1 loaded(17 B)",
+  "",
+  "√ Job #5 completed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+]
+`;
+
+exports[`logs failing bellboy job 1`] = `
+Array [
+  "",
+  "√ Job #3 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "x Job #3 failed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+  "    Error: Error: Oh, snap!",
+]
+`;
+
+exports[`logs intermediate results after reaching some interval 1`] = `
+Array [
+  "",
+  "√ Job #2 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "⌛︎ Job #2. Stream #0 processing (1 rows/sec)…",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 1 received (6 B).",
+  "",
+  "√ Job #2. Stream #0 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 1 received (6 B).",
+  "    Destination #0.",
+  "        Batch load: 1 loaded(8 B)",
+  "",
+  "√ Job #2 completed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+]
+`;
+
+exports[`logs load exceptions 1`] = `
 Array [
   "",
   "√ Job #1 started.",
@@ -26,16 +91,74 @@ Array [
   "",
   "x Job #1. Stream #0. Destination #0. Batch load failed.",
   "    Timestamp: timestamp-mock",
-  "    Source data: [\\"test0\\"]",
+  "    Source data: [\\"test\\"]",
   "    Error: Error: Oh, snap!",
   "",
   "√ Job #1. Stream #0 processed.",
   "    Timestamp: timestamp-mock",
-  "    Rows: 1 received (7 B).",
+  "    Rows: 1 received (6 B).",
   "    Destination #0.",
   "        Batch load: 1 failed",
   "",
   "√ Job #1 completed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+]
+`;
+
+exports[`logs multiple streams 1`] = `
+Array [
+  "",
+  "√ Job #7 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "√ Job #7. Stream #0 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 1 received (6 B).",
+  "    Destination #0.",
+  "        Batch load: 1 loaded(8 B)",
+  "",
+  "√ Job #7. Stream #1 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 0 received (0 B).",
+  "",
+  "√ Job #7 completed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+]
+`;
+
+exports[`logs stream info if stream emits one 1`] = `
+Array [
+  "",
+  "√ Job #6 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "√ Job #6. Stream #0 (some, info) processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 1 received (6 B).",
+  "    Destination #0.",
+  "        Batch load: 1 loaded(8 B)",
+  "",
+  "√ Job #6 completed.",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
+]
+`;
+
+exports[`logs successfull bellboy job 1`] = `
+Array [
+  "",
+  "√ Job #0 started.",
+  "    Timestamp: timestamp-mock",
+  "",
+  "√ Job #0. Stream #0 processed.",
+  "    Timestamp: timestamp-mock",
+  "    Rows: 1 received (6 B).",
+  "    Destination #0.",
+  "        Batch load: 1 loaded(8 B)",
+  "",
+  "√ Job #0 completed.",
   "    Timestamp: timestamp-mock",
   "    Job duration: pretty-ms-mock",
 ]
