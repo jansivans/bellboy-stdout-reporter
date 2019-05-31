@@ -69,7 +69,7 @@ export class StdoutReporter extends Reporter {
             let header = `Job #${jobId}. Stream #${stream.streamId} `;
             header += stream.streamInfo && stream.streamInfo.length ? `(${stream.streamInfo.join(', ')}) ` : '';
             if (stream.finished) {
-                header += 'processed.';
+                header += 'processed';
             } else {
                 const speed = stream.speed ? ` (${Math.round(stream.speed)} rows/sec)` : '';
                 header += `processing${speed}…`;
@@ -78,7 +78,7 @@ export class StdoutReporter extends Reporter {
                 type: stream.finished ? 'success' : 'wait',
                 header,
                 lines: {
-                    'Rows': chalk.green(`${stream.receivedRows} received (${filesize(stream.bytes)}).`)
+                    'Rows': chalk.green(`${stream.receivedRows} received (${filesize(stream.bytes)})`)
                 },
                 children: [],
             };
@@ -87,7 +87,7 @@ export class StdoutReporter extends Reporter {
                 const destinationId = destinationIds[i];
                 const destination = stream.destinations[Number(destinationId)];
                 const destinationLogItem: LogItem = {
-                    header: `Destination #${destinationId}.`,
+                    header: `Destination #${destinationId}`,
                     lines: {},
                 }
                 if (destination.rowsGenerated || destination.rowsGenerationFails) {
@@ -155,7 +155,7 @@ export class StdoutReporter extends Reporter {
             destination.rowsGenerationFails++;
             logItem({
                 type: 'fail',
-                header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Row generation failed.`,
+                header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Row generation failed`,
                 lines: {
                     'Source row': truncateStr(JSON.stringify(data)),
                     'Error': error,
@@ -167,7 +167,7 @@ export class StdoutReporter extends Reporter {
             destination.batchTransformFails++;
             logItem({
                 type: 'fail',
-                header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Batch transform failed.`,
+                header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Batch transform failed`,
                 lines: {
                     'Source data': truncateStr(JSON.stringify(data)),
                     'Error': error,
@@ -183,7 +183,7 @@ export class StdoutReporter extends Reporter {
             destination.batchLoadFails++;
             logItem({
                 type: 'fail',
-                header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Batch load failed.`,
+                header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Batch load failed`,
                 lines: {
                     'Source data': truncateStr(JSON.stringify(data)),
                     'Error': error,
@@ -198,7 +198,7 @@ export class StdoutReporter extends Reporter {
         job.on('startProcessing', async () => {
             logItem({
                 type: 'success',
-                header: `Job #${jobId} started.`,
+                header: `Job #${jobId} started`,
             });
         });
         job.on('endProcessing', async () => {
@@ -206,7 +206,7 @@ export class StdoutReporter extends Reporter {
             const durationMs = finishedMs - startedMs;
             logItem({
                 type: 'success',
-                header: `Job #${jobId} completed.`,
+                header: `Job #${jobId} completed`,
                 lines: {
                     'Job duration': prettyMs(durationMs),
                 }
@@ -217,7 +217,7 @@ export class StdoutReporter extends Reporter {
             const durationMs = finishedMs - startedMs;
             logItem({
                 type: 'fail',
-                header: `Job #${jobId} failed.`,
+                header: `Job #${jobId} failed`,
                 lines: {
                     'Job duration': prettyMs(durationMs),
                     'Error': err,
