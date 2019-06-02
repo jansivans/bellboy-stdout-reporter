@@ -8,9 +8,9 @@ npm install bellboy-stdout-reporter
 ## Usage
 ```javascript
 const bellboy = require('bellboy');
-const reporter = require('bellboy-stdout-reporter');
+const StdoutReporter = require('bellboy-stdout-reporter').default;
 
 const job = new bellboy.Job(processor, [destination], {
-    reporters: [new reporter.StdoutReporter()],
+    reporters: [new StdoutReporter()],
 });
 ```

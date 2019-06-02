@@ -27,4 +27,5 @@ export interface LogItem {
 
 export interface IReporterConfig {
     interval?: number;
+    verbose?: boolean;
 }

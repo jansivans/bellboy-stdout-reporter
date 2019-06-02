@@ -3,19 +3,23 @@ import chalk from 'chalk';
 import filesize from 'filesize';
 import prettyMs from 'pretty-ms';
 
-import { IStream, LogItem, IReporterConfig } from './types';
-import { truncateStr, getCurrentTimestamp } from './utils';
+import { IReporterConfig, IStream, LogItem } from './types';
+import { getCurrentTimestamp, stringify } from './utils';
 
 let globalJobId = 0;
-export class StdoutReporter extends Reporter {
+
+export default class StdoutReporter extends Reporter {
 
     private interval: number;
+    private verbose: boolean;
 
     constructor(config?: IReporterConfig) {
         super();
         this.interval = 5000;
+        this.verbose = false;
         if (config) {
             this.interval = config.interval || 5000;
+            this.verbose = config.verbose || false;
         }
     }
 
@@ -145,10 +149,28 @@ export class StdoutReporter extends Reporter {
         job.on('startProcessingRow', async (data) => {
             stream.receivedRows++;
             stream.bytes += Buffer.byteLength(JSON.stringify(data), 'utf8');
+            if (this.verbose) {
+                logItem({
+                    type: 'success',
+                    header: `Job #${jobId}. Stream #${stream.streamId}. Row received`,
+                    lines: {
+                        'Data': stringify(data),
+                    }
+                });
+            }
         });
         job.on('rowGenerated', async (destinationIndex, data) => {
             const destination = getDestination(destinationIndex);
             destination.rowsGenerated++;
+            if (this.verbose) {
+                logItem({
+                    type: 'success',
+                    header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex} Row generated`,
+                    lines: {
+                        'Data': stringify(data),
+                    }
+                });
+            }
         });
         job.on('rowGenerationError', async (destinationIndex, data, error) => {
             const destination = getDestination(destinationIndex);
@@ -157,7 +179,7 @@ export class StdoutReporter extends Reporter {
                 type: 'fail',
                 header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Row generation failed`,
                 lines: {
-                    'Source row': truncateStr(JSON.stringify(data)),
+                    'Source row': stringify(data),
                     'Error': error,
                 }
             });
@@ -169,7 +191,7 @@ export class StdoutReporter extends Reporter {
                 type: 'fail',
                 header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Batch transform failed`,
                 lines: {
-                    'Source data': truncateStr(JSON.stringify(data)),
+                    'Source data': stringify(data),
                     'Error': error,
                 }
             });
@@ -177,6 +199,15 @@ export class StdoutReporter extends Reporter {
         job.on('transformedBatch', async (destinationIndex, data) => {
             const destination = getDestination(destinationIndex);
             destination.batchesTransformed++;
+            if (this.verbose) {
+                logItem({
+                    type: 'success',
+                    header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex} Batch transformed`,
+                    lines: {
+                        'Data': stringify(data),
+                    }
+                });
+            }
         });
         job.on('loadingBatchError', async (destinationIndex, data, error) => {
             const destination = getDestination(destinationIndex);
@@ -185,7 +216,7 @@ export class StdoutReporter extends Reporter {
                 type: 'fail',
                 header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex}. Batch load failed`,
                 lines: {
-                    'Source data': truncateStr(JSON.stringify(data)),
+                    'Source data': stringify(data),
                     'Error': error,
                 }
             });
@@ -194,6 +225,15 @@ export class StdoutReporter extends Reporter {
             const destination = getDestination(destinationIndex);
             destination.batchesLoaded++;
             destination.bytesLoaded += Buffer.byteLength(JSON.stringify(data), 'utf8');
+            if (this.verbose) {
+                logItem({
+                    type: 'success',
+                    header: `Job #${jobId}. Stream #${stream.streamId}. Destination #${destinationIndex} Batch loaded`,
+                    lines: {
+                        'Data': stringify(data),
+                    }
+                });
+            }
         });
         job.on('startProcessing', async () => {
             logItem({

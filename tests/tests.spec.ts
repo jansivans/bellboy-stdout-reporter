@@ -1,8 +1,15 @@
 import { DynamicProcessor, Job } from 'bellboy';
 import stripAnsi from 'strip-ansi';
 
-import { StdoutReporter } from '../src';
-import { DummyDestination, FaultyDestination, timeout, FaultyProcessor, WithInfoProcessor, MultipleStreamProcessor } from './helpers';
+import StdoutReporter from '../src';
+import {
+    DummyDestination,
+    FaultyDestination,
+    FaultyProcessor,
+    MultipleStreamProcessor,
+    timeout,
+    WithInfoProcessor,
+} from './helpers';
 
 jest.mock('pretty-ms', () => (() => 'pretty-ms-mock'));
 jest.mock('../src/utils', () => ({
@@ -151,6 +158,43 @@ it('logs multiple streams', async () => {
     const processor = new MultipleStreamProcessor();
     const job = new Job(processor, [destination], {
         reporters: [new StdoutReporter()],
+    });
+    await job.run();
+    expect(consoleData).toMatchSnapshot();
+});
+
+it('logs successfull bellboy job in verbose mode', async () => {
+    const destination = new DummyDestination({
+        batchTransformer: async function (rows) {
+            return rows;
+        },
+        recordGenerator: async function* (row) {
+            yield row;
+        }
+    });
+    const processor = new DynamicProcessor({
+        generator: async function* () {
+            yield `test`;
+        },
+    });
+    const job = new Job(processor, [destination], {
+        reporters: [new StdoutReporter({ verbose: true })],
+    });
+    await job.run();
+    expect(consoleData).toMatchSnapshot();
+});
+
+it('logs truncated array', async () => {
+    const destination = new DummyDestination();
+    const processor = new DynamicProcessor({
+        generator: async function* () {
+            for (let i = 0; i < 10; i++) {
+                yield `test`;
+            }
+        },
+    });
+    const job = new Job(processor, [destination], {
+        reporters: [new StdoutReporter({ verbose: true })],
     });
     await job.run();
     expect(consoleData).toMatchSnapshot();
