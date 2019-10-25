@@ -253,13 +253,10 @@ export default class StdoutReporter extends Reporter {
             });
         });
         job.on('processingError', async (err) => {
-            const finishedMs = (new Date()).getTime();
-            const durationMs = finishedMs - startedMs;
             logItem({
                 type: 'fail',
                 header: `Job #${jobId} failed`,
                 lines: {
-                    'Job duration': prettyMs(durationMs),
                     'Error': err,
                 }
             });

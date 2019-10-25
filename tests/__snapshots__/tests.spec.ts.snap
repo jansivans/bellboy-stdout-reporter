@@ -56,8 +56,11 @@ Array [
   "",
   "x Job #3 failed",
   "    Timestamp: timestamp-mock",
-  "    Job duration: pretty-ms-mock",
   "    Error: Error: Oh, snap!",
+  "",
+  "√ Job #3 completed",
+  "    Timestamp: timestamp-mock",
+  "    Job duration: pretty-ms-mock",
 ]
 `;
 
