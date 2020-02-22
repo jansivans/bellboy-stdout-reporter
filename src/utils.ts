@@ -1,7 +1,8 @@
 const stringifyObject = require('stringify-object');
+const moment = require('moment');
 
 export function getCurrentTimestamp() {
-    return new Date().toISOString();
+    return moment().toISOString(true);
 }
 
 export function stringify(obj: any) {
